@@ -1,5 +1,9 @@
+import * as core from '@actions/core';
+
 const run = async(): Promise<void> => {
-    console.log("run method called");
+    const who = core.getInput('who-to-greet');
+    console.log(`Hello ${who}`);
+    core.setOutput('greeting', `Hello ${who}`);
 }
 
 run();

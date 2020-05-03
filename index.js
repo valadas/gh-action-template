@@ -36,9 +36,13 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
+var core = require("@actions/core");
 var run = function () { return __awaiter(void 0, void 0, void 0, function () {
+    var who;
     return __generator(this, function (_a) {
-        console.log("run method called");
+        who = core.getInput('who-to-greet');
+        console.log("Hello " + who);
+        core.setOutput('greeting', "Hello " + who);
         return [2 /*return*/];
     });
 }); };
