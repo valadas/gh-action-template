@@ -7,7 +7,7 @@ beforeEach(() => {
 })
 
 afterEach(() => {
-    delete process.env['INPUT_WHOT-TO-GREET'];
+    delete process.env['INPUT_WHO-TO-GREET'];
 })
 
 test('Without input', () => {
