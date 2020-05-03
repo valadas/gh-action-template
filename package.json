@@ -4,7 +4,9 @@
   "description": "github typescript action template",
   "main": "index.js",
   "scripts": {
-    "test": "test"
+    "test": "test",
+    "build": "tsc index.ts",
+    "start": "tsc index.ts && node index.js"
   },
   "repository": {
     "type": "git",
@@ -21,5 +23,9 @@
   "bugs": {
     "url": "https://github.com/valadas/gh-action-template/issues"
   },
-  "homepage": "https://github.com/valadas/gh-action-template#readme"
+  "homepage": "https://github.com/valadas/gh-action-template#readme",
+  "devDependencies": {
+    "@types/node": "^13.13.4",
+    "typescript": "^3.8.3"
+  }
 }
