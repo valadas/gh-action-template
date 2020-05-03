@@ -1,27 +1,12 @@
 name: 'Build action'
-on: [push]
+on:
+  push:
 
 jobs:
   build:
     name: build
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 1
-      - run: npm install
-      - run: npm run build
-      - run: git add .
-      - run: git config user.name $ACTOR
-        env:
-          ACTOR: ${{ github.actor }}
-      - run: git diff --quiet && git diff --staged --quiet || git commit -m 'Commit build result'
-      - run: git push https://$ACTOR:$TOKEN@github.com/$REPOSITORY.git
-        env:
-          ACTOR: ${{ github.actor }}
-          TOKEN: ${{ github.token }}
-          REPOSITORY: ${{ github.repository }}
       # - name: Dump GitHub context
       #   env:
       #     GITHUB_CONTEXT: ${{ toJson(github) }}
@@ -46,3 +31,19 @@ jobs:
       #   env:
       #     MATRIX_CONTEXT: ${{ toJson(matrix) }}
       #   run: echo "$MATRIX_CONTEXT"
+      - name: Checkout
+        uses: actions/checkout@v2
+        # with:
+        #   fetch-depth: 1
+      - run: npm install
+      - run: npm run build
+      - run: git add .
+      - run: git config user.name $ACTOR
+        env:
+          ACTOR: ${{ github.actor }}
+      - run: git diff --quiet && git diff --staged --quiet || git commit -m 'Commit build result'
+      - run: git push https://$ACTOR:$TOKEN@github.com/$REPOSITORY.git
+        env:
+          ACTOR: ${{ github.actor }}
+          TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
