@@ -1,0 +1,1 @@
+This is a template repository for creating github actions that are based on typescript and jest.
