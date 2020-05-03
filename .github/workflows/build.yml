@@ -1,0 +1,14 @@
+name: 'Build action'
+on: [push]
+
+jobs:
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: action/checkout@v2
+        with:
+          fetch-depth: 1
+      - run: npm isntall
+      - run: npm run build
