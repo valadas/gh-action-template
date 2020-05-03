@@ -19,7 +19,7 @@ jobs:
       - run: git commit -m 'Commit build result'
       - run: git push https://$ACTOR:$TOKEN@gihub.com/$REPOSITORY.git
         env:
-          ACTOR: ${{ github.repository_actor }}
+          ACTOR: ${{ github.actor }}
           TOKEN: ${{ github.token }}
           REPOSITORY: ${{ github.repository }}
       # - name: Dump GitHub context
