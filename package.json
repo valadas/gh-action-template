@@ -4,7 +4,7 @@
   "description": "github typescript action template",
   "main": "dist/index.js",
   "scripts": {
-    "build": "eslint . --ext .ts --fix && tsc index.ts && jest && ncc build index.ts"
+    "build": "eslint . --ext .ts --fix && tsc index.ts && jest && rollup -c"
   },
   "repository": {
     "type": "git",
