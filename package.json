@@ -33,10 +33,13 @@
     "jest": "^25.5.4",
     "js-yaml": "^3.13.1",
     "rollup": "^2.7.6",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
     "ts-jest": "^25.4.0",
     "typescript": "^3.8.3"
   },
   "dependencies": {
+    "@rollup/plugin-typescript": "^4.1.1",
     "actions-toolkit": "^4.0.0"
   }
 }
