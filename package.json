@@ -4,7 +4,7 @@
   "description": "github typescript action template",
   "main": "dist/index.js",
   "scripts": {
-    "build": "eslint . --ext .ts --fix && tsc index.ts && jest && ncc build"
+    "build": "eslint . --ext .ts --fix && tsc index.ts && jest && ncc build index.ts"
   },
   "repository": {
     "type": "git",
@@ -29,11 +29,13 @@
     "@typescript-eslint/eslint-plugin": "^2.30.0",
     "@typescript-eslint/parser": "^2.30.0",
     "@zeit/ncc": "^0.22.1",
-    "actions-toolkit": "^4.0.0",
     "eslint": "^6.8.0",
     "jest": "^25.5.4",
     "js-yaml": "^3.13.1",
     "ts-jest": "^25.4.0",
     "typescript": "^3.8.3"
+  },
+  "dependencies": {
+    "actions-toolkit": "^4.0.0"
   }
 }
