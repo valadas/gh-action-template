@@ -1,13 +1,23 @@
 import * as core from '@actions/core';
 import run from '../index';
+import fs from 'fs';
+import yaml from 'js-yaml';
 
 beforeEach(() => {
     jest.resetModules();
-    process.env['INPUT_WHO-TO-GREET'] = "World"; // Default input
+    const doc = yaml.safeLoad(fs.readFileSync(__dirname + '/../action.yml', 'utf8'));
+    Object.keys(doc.inputs).forEach(name => {
+        const envVar = `INPUT_${name.replace(/ /g, '_').toUpperCase()}`;
+        process.env[envVar] = doc.inputs[name]['default'];
+    });
 })
 
 afterEach(() => {
-    delete process.env['INPUT_WHO-TO-GREET'];
+    const doc = yaml.safeLoad(fs.readFileSync(__dirname + '/../action.yml', 'utf8'));
+    Object.keys(doc.inputs).forEach(name => {
+        const envVar = `INPUT_${name.replace(/ /g, '_').toUpperCase()}`;
+        delete process.env[envVar];
+    });
 })
 
 test('Without input', () => {
