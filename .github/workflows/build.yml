@@ -15,4 +15,4 @@ jobs:
       - run: git add .
       - run: git config user.name $GITHUB_ACTOR
       - run: git commit -m 'Commit build result'
-      - run: git push
+      - run: git push https://$GITHUB_ACTOR:$GITHUB_TOKEN@gihub.com/GITHUB_REPOSITORY
