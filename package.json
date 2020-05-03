@@ -2,11 +2,9 @@
   "name": "gh-action-template",
   "version": "0.1.0",
   "description": "github typescript action template",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "test": "test",
-    "build": "eslint . --ext .ts --fix && tsc index.ts",
-    "start": "tsc index.ts && node index.js"
+    "build": "eslint . --ext .ts --fix && tsc index.ts && jest && ncc build"
   },
   "repository": {
     "type": "git",
@@ -25,10 +23,14 @@
   },
   "homepage": "https://github.com/valadas/gh-action-template#readme",
   "devDependencies": {
+    "@types/jest": "^25.2.1",
     "@types/node": "^13.13.4",
     "@typescript-eslint/eslint-plugin": "^2.30.0",
     "@typescript-eslint/parser": "^2.30.0",
+    "@zeit/ncc": "^0.22.1",
     "eslint": "^6.8.0",
+    "jest": "^25.5.4",
+    "ts-jest": "^25.4.0",
     "typescript": "^3.8.3"
   }
 }
