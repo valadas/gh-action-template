@@ -13,6 +13,12 @@ jobs:
       - run: npm install
       - run: npm run build
       - run: git add .
-      - run: git config user.name ${{ GITHUB_ACTOR }}
+      - run: git config user.name $GITHUB_ACTOR
+        env:
+          GITHUB_ACTOR: ${{ GITHUB_ACTOR }}
       - run: git commit -m 'Commit build result'
-      - run: git push https://${{ GITHUB_ACTOR }}:${{ GITHUB_TOKEN }}@gihub.com/${{ GITHUB_REPOSITORY }}.git
+      - run: git push https://$GITHUB_ACTOR:$GITHUB_TOKEN@gihub.com/$GITHUB_REPOSITORY.git
+        env:
+          GITHUB_ACTOR: ${{ GITHUB_ACTOR }}
+          GITHUB_TOKEN: ${{ GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ GITHUB_REPOSITORY }}
