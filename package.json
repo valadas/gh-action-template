@@ -4,7 +4,7 @@
   "description": "github typescript action template",
   "main": "dist/index.js",
   "scripts": {
-    "build": "eslint . --ext .ts --fix && tsc index.ts && jest && ncc build index.ts"
+    "build": "eslint . --ext .ts --fix && tsc index.ts && jest && rollup -c"
   },
   "repository": {
     "type": "git",
@@ -32,10 +32,14 @@
     "eslint": "^6.8.0",
     "jest": "^25.5.4",
     "js-yaml": "^3.13.1",
+    "rollup": "^2.7.6",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
     "ts-jest": "^25.4.0",
     "typescript": "^3.8.3"
   },
   "dependencies": {
+    "@rollup/plugin-typescript": "^4.1.1",
     "actions-toolkit": "^4.0.0"
   }
 }
