@@ -17,7 +17,7 @@ jobs:
         env:
           ACTOR: ${{ github.actor }}
       - run: git commit -m 'Commit build result'
-      - run: git push https://$ACTOR:$TOKEN@gihub.com/$REPOSITORY.git
+      - run: git push https://$ACTOR:$TOKEN@github.com/$REPOSITORY.git
         env:
           ACTOR: ${{ github.actor }}
           TOKEN: ${{ github.token }}
