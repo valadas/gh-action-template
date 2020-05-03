@@ -1,0 +1,25 @@
+{
+  "name": "gh-action-template",
+  "version": "0.1.0",
+  "description": "github typescript action template",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/valadas/gh-action-template.git"
+  },
+  "keywords": [
+    "github",
+    "action",
+    "typescript",
+    "template"
+  ],
+  "author": "Daniel Valadas",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/valadas/gh-action-template/issues"
+  },
+  "homepage": "https://github.com/valadas/gh-action-template#readme"
+}
