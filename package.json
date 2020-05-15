@@ -24,7 +24,7 @@
   "homepage": "https://github.com/valadas/gh-action-template#readme",
   "devDependencies": {
     "@types/jest": "^25.2.1",
-    "@types/js-yaml": "^3.12.3",
+    "@types/js-yaml": "^3.12.4",
     "@types/node": "^13.13.4",
     "@typescript-eslint/eslint-plugin": "^2.30.0",
     "@typescript-eslint/parser": "^2.30.0",
