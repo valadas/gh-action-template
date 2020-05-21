@@ -39,7 +39,7 @@
     "typescript": "^3.8.3"
   },
   "dependencies": {
-    "@rollup/plugin-typescript": "^4.1.1",
+    "@rollup/plugin-typescript": "^4.1.2",
     "actions-toolkit": "^4.0.0"
   }
 }
