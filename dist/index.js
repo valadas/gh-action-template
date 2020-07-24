@@ -1,7 +1,7 @@
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('os'), require('path')) :
     typeof define === 'function' && define.amd ? define(['os', 'path'], factory) :
-    (global = global || self, global.index = factory(global.os, global.path));
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.index = factory(global.os, global.path));
 }(this, (function (os, path) { 'use strict';
 
     os = os && Object.prototype.hasOwnProperty.call(os, 'default') ? os['default'] : os;
