@@ -1,10 +1,11 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('os'), require('path')) :
-    typeof define === 'function' && define.amd ? define(['os', 'path'], factory) :
-    (global = global || self, global.index = factory(global.os, global.path));
-}(this, (function (os, path) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('os'), require('fs'), require('path')) :
+    typeof define === 'function' && define.amd ? define(['os', 'fs', 'path'], factory) :
+    (global = global || self, global.index = factory(global.os, global.fs, global.path));
+}(this, (function (os, fs, path) { 'use strict';
 
     os = os && Object.prototype.hasOwnProperty.call(os, 'default') ? os['default'] : os;
+    fs = fs && Object.prototype.hasOwnProperty.call(fs, 'default') ? fs['default'] : fs;
     path = path && Object.prototype.hasOwnProperty.call(path, 'default') ? path['default'] : path;
 
     /*! *****************************************************************************
@@ -42,6 +43,30 @@
     	return module = { exports: {} }, fn(module, module.exports), module.exports;
     }
 
+    var utils = createCommonjsModule(function (module, exports) {
+    // We use any as a valid input type
+    /* eslint-disable @typescript-eslint/no-explicit-any */
+    Object.defineProperty(exports, "__esModule", { value: true });
+    /**
+     * Sanitizes an input into a string so it can be passed into issueCommand safely
+     * @param input input to sanitize into a string
+     */
+    function toCommandValue(input) {
+        if (input === null || input === undefined) {
+            return '';
+        }
+        else if (typeof input === 'string' || input instanceof String) {
+            return input;
+        }
+        return JSON.stringify(input);
+    }
+    exports.toCommandValue = toCommandValue;
+
+    });
+
+    unwrapExports(utils);
+    var utils_1 = utils.toCommandValue;
+
     var command = createCommonjsModule(function (module, exports) {
     var __importStar = (commonjsGlobal && commonjsGlobal.__importStar) || function (mod) {
         if (mod && mod.__esModule) return mod;
@@ -52,6 +77,7 @@
     };
     Object.defineProperty(exports, "__esModule", { value: true });
     const os$1 = __importStar(os);
+
     /**
      * Commands
      *
@@ -105,28 +131,14 @@
             return cmdStr;
         }
     }
-    /**
-     * Sanitizes an input into a string so it can be passed into issueCommand safely
-     * @param input input to sanitize into a string
-     */
-    function toCommandValue(input) {
-        if (input === null || input === undefined) {
-            return '';
-        }
-        else if (typeof input === 'string' || input instanceof String) {
-            return input;
-        }
-        return JSON.stringify(input);
-    }
-    exports.toCommandValue = toCommandValue;
     function escapeData(s) {
-        return toCommandValue(s)
+        return utils.toCommandValue(s)
             .replace(/%/g, '%25')
             .replace(/\r/g, '%0D')
             .replace(/\n/g, '%0A');
     }
     function escapeProperty(s) {
-        return toCommandValue(s)
+        return utils.toCommandValue(s)
             .replace(/%/g, '%25')
             .replace(/\r/g, '%0D')
             .replace(/\n/g, '%0A')
@@ -139,7 +151,40 @@
     unwrapExports(command);
     var command_1 = command.issueCommand;
     var command_2 = command.issue;
-    var command_3 = command.toCommandValue;
+
+    var fileCommand = createCommonjsModule(function (module, exports) {
+    // For internal use, subject to change.
+    var __importStar = (commonjsGlobal && commonjsGlobal.__importStar) || function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+        result["default"] = mod;
+        return result;
+    };
+    Object.defineProperty(exports, "__esModule", { value: true });
+    // We use any as a valid input type
+    /* eslint-disable @typescript-eslint/no-explicit-any */
+    const fs$1 = __importStar(fs);
+    const os$1 = __importStar(os);
+
+    function issueCommand(command, message) {
+        const filePath = process.env[`GITHUB_${command}`];
+        if (!filePath) {
+            throw new Error(`Unable to find environment variable for file command ${command}`);
+        }
+        if (!fs$1.existsSync(filePath)) {
+            throw new Error(`Missing file at path: ${filePath}`);
+        }
+        fs$1.appendFileSync(filePath, `${utils.toCommandValue(message)}${os$1.EOL}`, {
+            encoding: 'utf8'
+        });
+    }
+    exports.issueCommand = issueCommand;
+
+    });
+
+    unwrapExports(fileCommand);
+    var fileCommand_1 = fileCommand.issueCommand;
 
     var core = createCommonjsModule(function (module, exports) {
     var __awaiter = (commonjsGlobal && commonjsGlobal.__awaiter) || function (thisArg, _arguments, P, generator) {
@@ -159,6 +204,8 @@
         return result;
     };
     Object.defineProperty(exports, "__esModule", { value: true });
+
+
 
     const os$1 = __importStar(os);
     const path$1 = __importStar(path);
@@ -186,9 +233,17 @@
      */
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     function exportVariable(name, val) {
-        const convertedVal = command.toCommandValue(val);
+        const convertedVal = utils.toCommandValue(val);
         process.env[name] = convertedVal;
-        command.issueCommand('set-env', { name }, convertedVal);
+        const filePath = process.env['GITHUB_ENV'] || '';
+        if (filePath) {
+            const delimiter = '_GitHubActionsFileCommandDelimeter_';
+            const commandValue = `${name}<<${delimiter}${os$1.EOL}${convertedVal}${os$1.EOL}${delimiter}`;
+            fileCommand.issueCommand('ENV', commandValue);
+        }
+        else {
+            command.issueCommand('set-env', { name }, convertedVal);
+        }
     }
     exports.exportVariable = exportVariable;
     /**
@@ -204,7 +259,13 @@
      * @param inputPath
      */
     function addPath(inputPath) {
-        command.issueCommand('add-path', {}, inputPath);
+        const filePath = process.env['GITHUB_PATH'] || '';
+        if (filePath) {
+            fileCommand.issueCommand('PATH', inputPath);
+        }
+        else {
+            command.issueCommand('add-path', {}, inputPath);
+        }
         process.env['PATH'] = `${inputPath}${path$1.delimiter}${process.env['PATH']}`;
     }
     exports.addPath = addPath;
